@@ -1,0 +1,198 @@
+div, span, p, td {
+	font-family: Arial, sans-serif;
+}
+#content {
+	width: 1000px;        
+        background-color:black;
+        overflow:hidden;
+        padding: 20px 0 20px 0;
+}
+#chart {
+	display: inline-block;
+        background-color:white;
+}
+#chart path {
+	-webkit-transition: opacity 0.2s linear;
+}
+#slider {
+	margin-top: 10px;
+}
+#legend {
+	display: inline-block;
+	position: relative;
+        width: 100%; 
+        center: 0; 
+}
+#legend_container {
+	position: absolute;
+	right: 0;
+	bottom: 26px;
+	width: 0;
+}
+#chart_container {
+	position: relative;
+	display: inline-block;
+        float:left; 
+}
+#smoother {
+	margin: 0 0 10px 16px;
+	width: 100px;
+}
+.rickshaw_graph .detail {
+	left: -1000;
+}
+#chart {
+	border: 1px solid #f0f0f0;
+}
+#side_panel {
+	padding: 0;
+	width: 25%;
+	display: inline-block;
+	vertical-align: top;
+        float:left;
+}
+#side_panel section {
+	background-color: #000000;
+	font-size: 12px;
+        text-align:center;
+}
+#side_panel section h6 {
+	margin: 0 0 1em 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+#side_panel .ui-slider-horizontal {
+	height: 1px !important;
+	border-color: #e0e0e0;
+	margin-bottom: 10px;
+}
+#side_panel .ui-slider-handle {
+	border-color: #a0a0a0;
+	height: 9px !important;
+	width: 9px !important;
+	top: -5px !important;
+	border-radius: 6px;
+	outline: none;
+	cursor: pointer;
+}
+#legend {
+	background-color: black;
+	padding: 0;
+}
+#legend .label {
+	color: white;
+        opacity: 0.75;
+        font-family:sans-serif
+}
+#legend .action {
+	color: black;
+	opacity: 0.5;
+}
+#legend ul {
+	padding: 0;
+}
+#legend ul .line {
+    text-align:left;
+    width:75%;
+    float:right; 
+}
+h1 {
+	font-family: Franklin Gothic Medium, UnDotum, Helvetica, Arial;
+	font-weight: normal;
+	font-size: 20px;
+}
+section {
+	border: none;
+	padding: 10px;
+}
+#smoother {
+	margin: 5px 0 0 10px;
+	width: 90%;
+}
+label.disabled {
+	opacity: 0.4;
+}
+#renderer_form.toggler {
+	display: block;
+	margin: 0;
+}
+#renderer_form.toggler input[type=radio]:checked {
+	outline: 2px solid white;
+}
+#renderer_form.toggler input[type=radio] {
+	-moz-appearance: button;
+	background: black;
+	margin: 0 7px;
+	width: 39px;
+	height: 25px;
+	position: absolute;
+}
+#renderer_form.toggler label {
+	display: inline-block;
+	padding: 0;
+	width: 39px;
+	padding-top: 27px;
+	text-align: center;
+	font-size: 10px;
+	color: #808080;
+	background-repeat: no-repeat;
+	position: relative;
+	margin: 0 7px;
+	cursor: pointer;
+}
+#interpolation_form,
+#offset_form {
+	vertical-align: top;
+	display: inline-block;
+	width: 45%;
+        text-align:left;
+}
+#interpolation_form label,
+#offset_form label {
+	display: block;
+}
+label[for=area] {
+	background: url(../images/om_stack.png);
+}
+label[for=line] {
+	background: url(../images/om_lines.png);
+}
+label[for=bar] {
+	background: url(../images/om_bar.png);
+}
+label[for=scatter] {
+	background: url(../images/om_scatter.png);
+}
+#offset_form label,
+#interpolation_form label {
+	background-repeat: no-repeat;
+	background-position: 2em center;
+	cursor: pointer;
+	cursor: hand;
+}
+#offset_form label span,
+#interpolation_form label span {
+	padding-left: 36px;
+}
+label[for=stack] {
+	background-image: url(../images/offset_stack.png);
+}
+label[for=pct] {
+	background-image: url(../images/offset_pct.png);
+}
+label[for=stream] {
+	background-image: url(../images/offset_stream.png);
+}
+label[for=value] {
+	background-image: url(../images/offset_value.png);
+}
+label[for=cardinal] {
+	background-image: url(../images/interp_cardinal.png);
+}
+label[for=linear] {
+	background-image: url(../images/interp_linear.png);
+}
+label[for=step] {
+	background-image: url(../images/interp_step.png);
+}
+
