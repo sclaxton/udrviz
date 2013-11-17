@@ -1,11 +1,12 @@
 import web
-import time
+from subprocess import call
+import simplejson as json
+
 render = web.template.render('templates/')
 
 urls = (
     '/', 'index'
-    #'/', 'count_holder',
-    #'/(.*)',  'count_down'
+    '/stream/params',  'stream_file'
 )
 
 
@@ -18,12 +19,37 @@ class index:
         return render.index()
 
 class stream_file:
-    def GET(self,count):
-        # These headers make it work in browsers
-        web.header('Content-type','text/html')
-        web.header('Transfer-Encoding','chunked')
-        yield '<h2>Prepare for Launch!</h2>'
-        time.sleep(1)
+    def POST(self):
+        params = web.input()
+        # what transfer method to get data for
+        command_slug = params.comm
+        call([command_slug, command_slug + ".txt", command_slug + ".log"])
+
+    def parse_x(line):
+        return 0
+
+    def parse_y(line):
+        return 0
+
+    def GET(self):
+        params = web.input()
+        command_slug = params.comm
+        file_name = command_slug + '.log'
+        data = []
+        # the index of the file chunk that will be served
+        read_chunk = int(params.chunk)
+        i = 0
+        with open(file_name) as f:
+            for line in f:
+                if i < read_chunk:
+                    point = {}
+                    point.x = self.parse_x(line)
+                    point.y = self.parse_y(line)
+                    data.append(point)
+                else:
+                    break
+        return json.dumps(data)
+
 
 if __name__ == "__main__":
     app.run()
