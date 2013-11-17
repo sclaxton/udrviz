@@ -8,46 +8,58 @@ $(document).ready( function () {
         random.addData(seriesData);
     }
 
-    var palette = new Rickshaw.Color.Palette( { scheme: 'osdc' } );
+    var seriesData2 = [ [], [] ];
+
+    for (var j = 0; j < 100 ; j++) {
+        random.addData(seriesData2);
+    }
+
+    var newdata = [];
+
+    for (var k = 0; k < 50; k++) {
+        var newdatum = {};
+        newdatum.x = seriesData2[1][99].x;
+        newdatum.y = 0;
+        newdata.push(newdatum);
+    }
+
+    seriesData2[1] = seriesData2[1].concat(newdata);
+
+    console.log(seriesData2[1]);
+
+    var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum14' } );
 
     // instantiate our graph!
 
     var graph = new Rickshaw.Graph( {
         element: document.getElementById("chart"),
-        width: 600,
-        height: (1000 / 3),
+        width: 900,
+        height: 500,
         renderer: 'area',
         stroke: true,
         preserve: true,
         series: [
             {
                 color: palette.color(),
-                data: seriesData[0],
-                name: 'Moscow'
-            }, {
-                color: palette.color(),
-                data: seriesData[1],
-                name: 'Shanghai'
-            }, {
-                color: palette.color(),
-                data: seriesData[2],
-                name: 'Amsterdam'
-            }, {
+                data: seriesData2[1],
+                name: 'test'
+            },
+            {
                 color: palette.color(),
                 data: seriesData[3],
-                name: 'Paris'
+                name: 'UDR'
             }, {
                 color: palette.color(),
                 data: seriesData[4],
-                name: 'Tokyo'
+                name: 'rSync'
             }, {
                 color: palette.color(),
                 data: seriesData[5],
-                name: 'London'
+                name: 'UDT'
             }, {
                 color: palette.color(),
                 data: seriesData[6],
-                name: 'New York'
+                name: 'Other'
             }
         ]
     } );
@@ -76,6 +88,26 @@ $(document).ready( function () {
         element: document.getElementById('legend')
     } );
 
+    var buttons = $("#legend .button");
+
+    buttons.on("click", function on_click (event) {
+        buttons.off();
+        buttons.classList.add('clicked');
+        var text = event.target.innerTexti
+        var get_chunk = 0;
+        function get_data () {
+            data = [];
+            if (data.length != 0) {
+                $.getJSON('stream/params?comm=' + text + 'chunk=' + get_chunk, function (data) {
+
+                })
+                setTimeout(get_data, 100);
+            }
+        }
+        $.post('stream/params?comm=' + text, function () {
+            setTimeout(get_data, 100)
+        });
+    })
 //    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
     //     graph: graph,
     //     legend: legend
@@ -128,11 +160,11 @@ $(document).ready( function () {
         "Added documentation for new methods"
     ];
 
-    setInterval( function() {
-        random.removeData(seriesData);
-        random.addData(seriesData);
-        graph.update();
+    //setInterval( function() {
+        //random.removeData(seriesData);
+        //random.addData(seriesData);
+        //graph.update();
 
-    }, 3000 );
+    //}, 3000 );
 
 })

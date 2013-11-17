@@ -2,14 +2,17 @@ div, span, p, td {
 	font-family: Arial, sans-serif;
 }
 #content {
-	width: 1000px;        
-        background-color:black;
-        overflow:hidden;
-        padding: 20px 0 20px 0;
+    height: 520px;
+    width:1200px;
+    background-color:white;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
 }
+
 #chart {
 	display: inline-block;
-        background-color:white;
+    background-color:white;
 }
 #chart path {
 	-webkit-transition: opacity 0.2s linear;
@@ -46,13 +49,13 @@ div, span, p, td {
 }
 #side_panel {
 	padding: 0;
-	width: 25%;
+	width: 20%;
 	display: inline-block;
 	vertical-align: top;
         float:left;
 }
 #side_panel section {
-	background-color: #000000;
+	background-color: white;
 	font-size: 12px;
         text-align:center;
 }
@@ -76,7 +79,7 @@ div, span, p, td {
 	cursor: pointer;
 }
 #legend {
-	background-color: black;
+	background-color: white;
 	padding: 0;
 }
 #legend .label {
@@ -85,7 +88,7 @@ div, span, p, td {
         font-family:sans-serif
 }
 #legend .action {
-	color: black;
+	color: white;
 	opacity: 0.5;
 }
 #legend ul {
@@ -101,10 +104,13 @@ h1 {
 	font-weight: normal;
 	font-size: 20px;
 }
+
 section {
-	border: none;
-	padding: 10px;
+    border: none;
+    border-top: 1px solid #eaeaea;
+    padding: 15px 0;
 }
+
 #smoother {
 	margin: 5px 0 0 10px;
 	width: 90%;
@@ -117,11 +123,11 @@ label.disabled {
 	margin: 0;
 }
 #renderer_form.toggler input[type=radio]:checked {
-	outline: 2px solid white;
+	outline: 2px solid #4479BA;
 }
 #renderer_form.toggler input[type=radio] {
 	-moz-appearance: button;
-	background: black;
+	background: white;
 	margin: 0 7px;
 	width: 39px;
 	height: 25px;
@@ -150,6 +156,7 @@ label.disabled {
 #interpolation_form label,
 #offset_form label {
 	display: block;
+    margin-bottom: 5%;
 }
 label[for=area] {
 	background: url(../images/om_stack.png);
@@ -172,7 +179,7 @@ label[for=scatter] {
 }
 #offset_form label span,
 #interpolation_form label span {
-	padding-left: 36px;
+	padding-left: 48px;
 }
 label[for=stack] {
 	background-image: url(../images/offset_stack.png);

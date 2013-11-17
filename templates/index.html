@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+    <link type="text/css" rel="stylesheet" href="static/css/normalize.css"><link>
   <link type="text/css" rel="stylesheet" href="static/css/jquery-ui.css">
   <link type="text/css" rel="stylesheet" href="static/css/graph.css">
   <link type="text/css" rel="stylesheet" href="static/css/detail.css">
@@ -10,9 +11,10 @@
 <body>
 
 <div id="content">
-
   <form id="side_panel">
-    <section><div id="legend"></div></section>
+      <section>
+      <div id="legend"></div>
+      </section>
     <section>
       <div id="renderer_form" class="toggler">
         <input type="radio" name="renderer" id="area" value="area"
@@ -33,12 +35,7 @@
           <input type="radio" name="offset" id="stack" value="zero"
                  checked>
           <span>stack</span>
-          </label>
-        <label for="stream">
-          <input type="radio" name="offset" id="stream"
-                 value="wiggle">
-          <span>stream</span>
-          </label>
+        </label>
         <label for="pct">
           <input type="radio" name="offset" id="pct" value="expand">
           <span>pct</span>
