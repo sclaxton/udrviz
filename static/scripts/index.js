@@ -1,31 +1,11 @@
 $(document).ready( function () {
     // set up our data series with 150 random data points
 
-    var seriesData = [ [], [], [], [], [], [], [], [], [] ];
-    var random = new Rickshaw.Fixtures.RandomData(150);
+    var seriesKeys = ['udr', 'rsync', 'udt'];
 
-    for (var i = 0; i < 150; i++) {
-        random.addData(seriesData);
-    }
+    var seriesData = {'udr': [], 'rsync': [], 'udt': []};
 
-    var seriesData2 = [ [], [] ];
-
-    for (var j = 0; j < 100 ; j++) {
-        random.addData(seriesData2);
-    }
-
-    var newdata = [];
-
-    for (var k = 0; k < 50; k++) {
-        var newdatum = {};
-        newdatum.x = seriesData2[1][99].x;
-        newdatum.y = 0;
-        newdata.push(newdatum);
-    }
-
-    seriesData2[1] = seriesData2[1].concat(newdata);
-
-    console.log(seriesData2[1]);
+    var cachedData = {'udr': [], 'rsync': [], 'udt': []};
 
     var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum14' } );
 
@@ -41,26 +21,17 @@ $(document).ready( function () {
         series: [
             {
                 color: palette.color(),
-                data: seriesData2[1],
-                name: 'test'
+                data: seriesData[seriesKeys[0]],
+                name: seriesKeys[0].toUpperCase()
+            }, {
+                color: palette.color(),
+                data: seriesData[seriesKeys[1]],
+                name: seriesKeys[1].toUpperCase()
+            }, {
+                color: palette.color(),
+                data: seriesData[seriesKeys[2]],
+                name: seriesKeys[2].toUpperCase()
             },
-            {
-                color: palette.color(),
-                data: seriesData[3],
-                name: 'UDR'
-            }, {
-                color: palette.color(),
-                data: seriesData[4],
-                name: 'rSync'
-            }, {
-                color: palette.color(),
-                data: seriesData[5],
-                name: 'UDT'
-            }, {
-                color: palette.color(),
-                data: seriesData[6],
-                name: 'Other'
-            }
         ]
     } );
 
@@ -88,24 +59,70 @@ $(document).ready( function () {
         element: document.getElementById('legend')
     } );
 
-    var buttons = $("#legend .button");
+    var reset = document.createElement('button');
+    reset.className = 'reset_button';
+    var reset_container = $(legend.element).find('div').get(1);
+    reset_container.appendChild(reset);
+    $('#legend .reset_button').on('click', function () {
+        seriesKeys.forEach(function (name) {
+            seriesCache[name] = [];
+            seriesData[name] = [];
+        })
+    })
 
-    buttons.on("click", function on_click (event) {
+    var buttons = $("#legend .series_button");
+
+    buttons.on('click', function on_click (event) {
         buttons.off();
         buttons.classList.add('clicked');
-        var text = event.target.innerTexti
+        var series_key = event.target.innerText.toLowerCase();
+        var series = seriesCache[series_key];
         var get_chunk = 0;
-        function get_data () {
-            data = [];
-            if (data.length != 0) {
-                $.getJSON('stream/params?comm=' + text + 'chunk=' + get_chunk, function (data) {
-
-                })
-                setTimeout(get_data, 100);
-            }
+        function get_data (time) {
+            $.getJSON('stream/params?comm=' + text + 'chunk=' + get_chunk, function (data) {
+                if (!data.finished) {
+                    if (!data.waiting) {
+                        data.x = time;
+                        if (series[get_chunk]) {
+                            var last = series[get_chunk].length - 1;
+                            series[get_chunk][last] = data;
+                            seriesData[series_key] = data;
+                        }
+                        else {
+                            seriesKeys.forEach(function (name) {
+                                if (name == series_key) {
+                                    var new_data = series[get_chunk - 1].push(data);
+                                    series[get_chunk] = new_data;
+                                    seriesData[name] = new_data
+                                }
+                                else {
+                                    var other_series = seriesCache[name];
+                                    var last_data = other_series[get_chunk - 1]
+                                    var last = last_data.length - 1;
+                                    var last_x = other_series[get_chunk - 1][last].x;
+                                    var new_datum = {};
+                                    new_datum.x = last_x;
+                                    new_datum.y = null;
+                                    var new_data =  other_series[get_chunk - 1].push(new_datum);
+                                    other_series[get_chunk] = new_data;
+                                    seriesData[name] = new_data;
+                                }
+                            })
+                        }
+                        graph.update();
+                        get_chunk += 1;
+                        time  = time + 1;
+                    }
+                    setTimeout(function () { get_data(next_time); }, 1000);
+                }
+                else {
+                    buttons.classList.remove('clicked');
+                    buttons.on('click', on_click);
+                }
+            });
         }
-        $.post('stream/params?comm=' + text, function () {
-            setTimeout(get_data, 100)
+        $.post('stream/params?comm=' + text, function (time) {
+            setTimeout(function () { get_data(time); } , 1000)
         });
     })
 //    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
@@ -140,6 +157,26 @@ $(document).ready( function () {
         ticksTreatment: ticksTreatment
     } );
 
+    //     legend: legend
+    // } );
+
+
+    var ticksTreatment = 'glow';
+
+    var xAxis = new Rickshaw.Graph.Axis.Time( {
+        graph: graph,
+        ticksTreatment: ticksTreatment,
+        timeFixture: new Rickshaw.Fixtures.Time.Local()
+    } );
+
+    xAxis.render();
+
+    var yAxis = new Rickshaw.Graph.Axis.Y( {
+        graph: graph,
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        ticksTreatment: ticksTreatment
+    } );
+
     yAxis.render();
 
     var controls = new RenderControls( {
@@ -148,23 +185,3 @@ $(document).ready( function () {
     } );
 
     // add some data every so often
-
-    var messages = [
-        "Changed home page welcome message",
-        "Minified JS and CSS",
-        "Changed button color from blue to green",
-        "Refactored SQL query to use indexed columns",
-        "Added additional logging for debugging",
-        "Fixed typo",
-        "Rewrite conditional logic for clarity",
-        "Added documentation for new methods"
-    ];
-
-    //setInterval( function() {
-        //random.removeData(seriesData);
-        //random.addData(seriesData);
-        //graph.update();
-
-    //}, 3000 );
-
-})

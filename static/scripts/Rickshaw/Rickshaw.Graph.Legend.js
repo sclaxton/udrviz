@@ -41,12 +41,11 @@ Rickshaw.Graph.Legend = function(args) {
         //line.appendChild(swatch);
 
         var button = document.createElement('button');
-        button.className = 'button';
+        button.className = 'series_button';
         button.style.backgroundColor = series.color;
         button.style.border = "1px solid " + series.color;
         button.innerHTML = series.name;
         button.type = 'button';
-        button.onclick = function (event) { event.target.classList.toggle('clicked') };
 
         line.appendChild(button);
         list.appendChild(line);
